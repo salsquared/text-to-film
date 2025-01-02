@@ -1,8 +1,9 @@
 import React, { useState } from 'react';
+import { Outlet } from '@tanstack/react-router';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 
-const MainLayout = ({ children }) => {
+const MainLayout = () => {
   const [isExpanded, setIsExpanded] = useState(true);
   const [activeStage, setActiveStage] = useState('development');
 
@@ -18,7 +19,7 @@ const MainLayout = ({ children }) => {
       <div className="flex-1 flex flex-col">
         <TopBar />
         <main className="flex-1 overflow-auto p-6 bg-slate-50">
-          {children}
+          <Outlet />
         </main>
       </div>
     </div>

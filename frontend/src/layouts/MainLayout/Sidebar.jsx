@@ -15,10 +15,11 @@ import {
   Scissors,
   AlertCircle
 } from 'lucide-react';
-import router from '../../routes';
+
+import { router } from '../../routes/router';
 
 const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => {
-  const handleNavigation = (path) => {
+  const handleNavigation = (path, type = 'stage') => {
     setActiveStage(path);
     router.navigate({
       to: `/projects/default/${path}`
@@ -35,7 +36,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
   const commonTools = [
     { id: 'assets', label: 'Asset Library', icon: FolderOpen },
     { id: 'team', label: 'Team', icon: Users },
-    { id: 'calendar', label: 'Schedule', icon: Calendar },
+    { id: 'schedule', label: 'Schedule', icon: Calendar },
     { id: 'messages', label: 'Messages', icon: MessageSquare }
   ];
 
@@ -105,7 +106,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
               key={tool.id}
               variant="ghost"
               className="w-full justify-start"
-              onClick={() => handleNavigation(tool.id)}
+              onClick={() => handleNavigation(tool.id, 'tool')}
             >
               <tool.icon className="h-5 w-5 mr-2" />
               {isExpanded && tool.label}
@@ -117,7 +118,11 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
       {/* Bottom Section */}
       <div className="mt-auto p-4 border-t border-slate-700">
         <nav className="space-y-2">
-          <Button variant="ghost" className="w-full justify-start">
+          <Button 
+            variant="ghost" 
+            className="w-full justify-start"
+            onClick={() => router.navigate({ to: '/settings' })}
+          >
             <Settings className="h-5 w-5 mr-2" />
             {isExpanded && 'Settings'}
           </Button>

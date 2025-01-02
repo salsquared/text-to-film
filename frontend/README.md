@@ -1,70 +1,108 @@
-# Getting Started with Create React App
+# 🎬 text-to-film
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+An open-source tool that uses AI agents to assist in film production by emulating specific film industry roles. Users can focus on their preferred creative roles and over see AI agents handling other aspects of production through a coordinated pipeline.
 
-## Available Scripts
+## 🎯 Core Concept
 
-In the project directory, you can run:
+- Users select which film production roles they want to handle personally
+- AI agents are generated to fill remaining roles
+- Agents coordinate through a pipeline architecture
+- Each agent provides input/feedback for downstream processes
+- Results can be iteratively refined through user-agent interaction
 
-### `npm start`
+## 🚧 Current Development Focus
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+- Agent interaction infrastructure
+- Role-specific AI model integration
+- Pipeline communication patterns
+- Basic UI for testing agent interactions
+- Core transformation primitives
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+## 🏗️ Technical Architecture
 
-### `npm test`
+### 🎨 Frontend
+- React + TailwindCSS
+- Material UI components
+- State management via React Context
+- File handling and media playback
+- Real-time agent interaction UI
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+### ⚙️ Backend
+- FastAPI for API layer
+- Python-based agent coordination
+- Redis for job queues
+- JWT authentication
+- File storage abstraction
 
-### `npm run build`
+### 🤖 AI Integration
+- Text generation for scripts/planning
+- Image generation for storyboards/concepts
+- Video synthesis for scene composition
+- Agent communication protocol
+- Pipeline orchestration
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+## 📊 System Overview
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+````
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+startLine: 62
+endLine: 84
+````
 
-### `npm run eject`
+## 🚀 Getting Started
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+### 📋 Requirements
+- Node.js v18+
+- Python 3.8+
+- Git
+- Redis (optional, for queue management)
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### ⚡ Setup
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+1. Clone repository
+````
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+git clone https://github.com/yourusername/text-to-film.git
+cd text-to-film
+````
 
-## Learn More
+2. Install dependencies
+````
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+# Frontend
+cd frontend
+npm install
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+# Backend
+cd ../backend
+pip install -r requirements.txt
+````
 
-### Code Splitting
+3. Start development servers
+````
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+# Terminal 1: Frontend
+cd frontend
+npm start
 
-### Analyzing the Bundle Size
+# Terminal 2: Backend
+cd backend
+uvicorn app.main:app --reload
+````
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+## 🤝 Contributing
 
-### Making a Progressive Web App
+This is an early-stage development project. Contributions welcome in:
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+- AI model integration
+- Agent communication protocols
+- Pipeline optimization
+- UI/UX improvements
+- Documentation
+- Testing
 
-### Advanced Configuration
+See CONTRIBUTING.md for development guidelines.
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+## 📝 License
 
-### Deployment
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
-
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+MIT License - See LICENSE for details
