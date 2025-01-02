@@ -9,6 +9,14 @@ This tool is currently in early development, focusing on:
 - Establishing the core text-to-film transformation pipeline
 - Creating a simple interface for testing and validation
 
+## Vision
+
+Ultimately I think that AI should serve as a tool to empower artists. I want text to film, to allow any artist to fill the gaps in their abilities to let the ones they possess shine.
+
+Filmmaking being a collaborative effort, multiple people should be able to pick out roles and have AI assistants instead of agents in the project. 
+
+Version control and asset management is another big thing id like to add in the future.
+
 ## 🚀 Getting Started
 
 ### Prerequisites
@@ -93,4 +101,4 @@ We welcome contributions! Here's how you can help:
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
 
-<p align="center">Made with ❤️ for the filmmaking community</p>
+<p align="center">Made with ❤️ for the filmmakers like me!</p>
