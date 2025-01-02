@@ -93,21 +93,4 @@ We welcome contributions! Here's how you can help:
 4. Push to the branch (`git push origin feature/YourFeature`)
 5. Open a Pull Request
 
-## 📝 License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## 🙏 Acknowledgments
-
-- The open-source community for their invaluable tools and libraries
-- Film industry professionals who provide insights and feedback
-
-## 📞 Contact
-
-Salvador Salcedo - [@ssalcedo00](https://github.com/ssalcedo00)
-
-Project Link: [https://github.com/ssalcedo00/text-to-film](https://github.com/ssalcedo00/text-to-film)
-
----
-
 <p align="center">Made with ❤️ for the filmmaking community</p>

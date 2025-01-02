@@ -1,13 +1,10 @@
 import './App.css';
-import MainLayout from './layouts/MainLayout';
+import { RouterProvider } from '@tanstack/react-router';
+import router from './routes';
 
 function App() {
   return (
-    <div className="App">
-      <MainLayout>
-        {/* Your route components will go here */}
-      </MainLayout>
-    </div>
+    <RouterProvider router={router} />
   );
 }
 

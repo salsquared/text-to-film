@@ -15,8 +15,16 @@ import {
   Scissors,
   AlertCircle
 } from 'lucide-react';
+import router from '../../routes';
 
 const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => {
+  const handleNavigation = (path) => {
+    setActiveStage(path);
+    router.navigate({
+      to: `/projects/default/${path}`
+    });
+  };
+
   const productionStages = [
     { id: 'development', label: 'Development', icon: FileText, status: 'active' },
     { id: 'pre-production', label: 'Pre-Production', icon: Clapperboard, status: 'upcoming' },
@@ -35,7 +43,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
     <div className={`bg-slate-900 text-white flex flex-col ${isExpanded ? 'w-64' : 'w-16'} transition-all duration-300`}>
       {/* Top Section - Logo & Toggle */}
       <div className="p-4 border-b border-slate-700 flex items-center justify-between">
-        {isExpanded && <span className="font-bold text-lg">FilmForge</span>}
+        {isExpanded && <span className="font-bold text-lg">text-to-film</span>}
         <Button 
           variant="text" 
           size="small"
@@ -74,7 +82,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
               className={`w-full justify-start ${
                 activeStage === stage.id ? 'bg-slate-800' : ''
               } ${stage.status === 'locked' ? 'opacity-50' : ''}`}
-              onClick={() => setActiveStage(stage.id)}
+              onClick={() => handleNavigation(stage.id)}
             >
               <stage.icon className="h-5 w-5 mr-2" />
               {isExpanded && (
@@ -97,6 +105,7 @@ const Sidebar = ({ isExpanded, setIsExpanded, activeStage, setActiveStage }) => 
               key={tool.id}
               variant="ghost"
               className="w-full justify-start"
+              onClick={() => handleNavigation(tool.id)}
             >
               <tool.icon className="h-5 w-5 mr-2" />
               {isExpanded && tool.label}
