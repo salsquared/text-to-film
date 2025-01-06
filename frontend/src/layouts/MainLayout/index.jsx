@@ -3,10 +3,17 @@ import { Outlet } from '@tanstack/react-router';
 import Sidebar from './Sidebar';
 import TopBar from './TopBar';
 import { useUI } from '../../contexts/UIContext';
+import { useAuth } from '../../contexts/AuthContext';
 
 const MainLayout = () => {
   const { state, dispatch } = useUI();
+  const { isAuthenticated } = useAuth();
   
+  // For auth pages, render without sidebar and topbar
+  if (!isAuthenticated && ['/signin', '/signup'].includes(window.location.pathname)) {
+    return <Outlet />;
+  }
+
   return (
     <div className="flex h-screen">
       <Sidebar 

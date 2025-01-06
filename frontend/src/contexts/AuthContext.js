@@ -1,4 +1,5 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { supabase, signIn as supabaseSignIn, signUp as supabaseSignUp, signOut as supabaseSignOut } from '../lib/supabase';
 
 const initialState = {
   user: null,
@@ -9,6 +10,7 @@ const initialState = {
 const authReducer = (state, action) => {
   switch (action.type) {
     case 'LOGIN_SUCCESS':
+    case 'REGISTER_SUCCESS':
       return {
         ...state,
         user: action.payload,
@@ -37,23 +39,92 @@ const AuthContext = createContext();
 export const AuthProvider = ({ children }) => {
   const [state, dispatch] = useReducer(authReducer, initialState);
 
-  const login = async (credentials) => {
+  useEffect(() => {
+    // Set up Supabase auth state listener
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((event, session) => {
+      if (event === 'SIGNED_IN' && session) {
+        dispatch({ 
+          type: 'LOGIN_SUCCESS', 
+          payload: {
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.user_metadata?.full_name
+          }
+        });
+      } else if (event === 'SIGNED_OUT') {
+        dispatch({ type: 'LOGOUT' });
+      }
+    });
+
+    // Check current session
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      if (session) {
+        dispatch({ 
+          type: 'LOGIN_SUCCESS', 
+          payload: {
+            id: session.user.id,
+            email: session.user.email,
+            name: session.user.user_metadata?.full_name
+          }
+        });
+      } else {
+        dispatch({ type: 'SET_LOADING', payload: false });
+      }
+    };
+    
+    checkSession();
+
+    return () => {
+      subscription?.unsubscribe();
+    };
+  }, []);
+
+  const register = async (credentials) => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      // TODO: Add actual API call here
-      const user = { id: '1', name: 'Test User' }; // Temporary mock
-      dispatch({ type: 'LOGIN_SUCCESS', payload: user });
+      const { user } = await supabaseSignUp(credentials);
+      if (!user) throw new Error('Registration failed');
+      
+      return user;
     } catch (error) {
-      console.error('Login failed:', error);
+      console.error('Registration failed:', error);
+      throw error;
     }
   };
 
-  const logout = () => {
-    dispatch({ type: 'LOGOUT' });
+  const login = async (credentials) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const { user } = await supabaseSignIn(credentials);
+      if (!user) throw new Error('Login failed');
+      
+      return user;
+    } catch (error) {
+      console.error('Login failed:', error);
+      throw error;
+    }
+  };
+
+  const logout = async () => {
+    try {
+      await supabaseSignOut();
+    } catch (error) {
+      console.error('Logout failed:', error);
+      throw error;
+    }
   };
 
   return (
-    <AuthContext.Provider value={{ state, login, logout }}>
+    <AuthContext.Provider value={{ 
+      state, 
+      register,
+      login, 
+      logout,
+      isAuthenticated: state.isAuthenticated,
+      user: state.user,
+      loading: state.loading
+    }}>
       {children}
     </AuthContext.Provider>
   );

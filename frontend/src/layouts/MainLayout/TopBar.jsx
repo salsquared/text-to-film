@@ -12,8 +12,7 @@ import {
   FolderOpen,
   Users,
   Calendar,
-  MessageSquare,
-  Home
+  MessageSquare
 } from 'lucide-react';
 import { useRouter, useNavigate } from '@tanstack/react-router';
 

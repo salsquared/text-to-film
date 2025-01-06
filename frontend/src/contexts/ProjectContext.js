@@ -1,4 +1,6 @@
-import React, { createContext, useContext, useReducer } from 'react';
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
+import { createProject as supabaseCreateProject, getProjects as supabaseGetProjects, getProject as supabaseGetProject } from '../lib/supabase';
+import { useAuth } from './AuthContext';
 
 const initialState = {
   currentProject: null,
@@ -51,24 +53,61 @@ const ProjectContext = createContext();
 
 export const ProjectProvider = ({ children }) => {
   const [state, dispatch] = useReducer(projectReducer, initialState);
+  const { isAuthenticated } = useAuth();
 
-  // Add project methods
-  const setCurrentProject = (project) => {
-    dispatch({ type: 'SET_CURRENT_PROJECT', payload: project });
+  useEffect(() => {
+    // Load projects when authenticated
+    if (isAuthenticated) {
+      loadProjects();
+    }
+  }, [isAuthenticated]);
+
+  const setCurrentProject = async (projectData) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const project = await supabaseCreateProject(projectData);
+      dispatch({ type: 'SET_CURRENT_PROJECT', payload: project });
+      return project;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
   };
 
-  const updateProject = (projectData) => {
-    dispatch({ type: 'UPDATE_PROJECT', payload: projectData });
+  const updateProject = async (projectData) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      // TODO: Add update project API call
+      dispatch({ type: 'UPDATE_PROJECT', payload: projectData });
+      return projectData;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
   };
 
   const loadProjects = async () => {
     try {
       dispatch({ type: 'SET_LOADING', payload: true });
-      // TODO: Add actual API call here
-      const projects = []; // Temporary mock
+      const projects = await supabaseGetProjects();
       dispatch({ type: 'SET_PROJECTS', payload: projects });
     } catch (error) {
       dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
+    }
+  };
+
+  const getProject = async (id) => {
+    try {
+      dispatch({ type: 'SET_LOADING', payload: true });
+      const project = await supabaseGetProject(id);
+      if (project) {
+        dispatch({ type: 'SET_CURRENT_PROJECT', payload: project });
+      }
+      return project;
+    } catch (error) {
+      dispatch({ type: 'SET_ERROR', payload: error.message });
+      throw error;
     }
   };
 
@@ -77,7 +116,12 @@ export const ProjectProvider = ({ children }) => {
       state, 
       setCurrentProject, 
       updateProject, 
-      loadProjects 
+      loadProjects,
+      getProject,
+      currentProject: state.currentProject,
+      projects: state.projects,
+      loading: state.loading,
+      error: state.error
     }}>
       {children}
     </ProjectContext.Provider>
