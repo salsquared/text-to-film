@@ -1,11 +1,22 @@
 import { createClient } from '@supabase/supabase-js';
 
 // These will be replaced with actual values when you create your Supabase project
-const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
-const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
+const supabaseUrl = process.env.REACT_APP_SUPABASE_URL;
+const supabaseAnonKey = process.env.REACT_APP_SUPABASE_ANON_KEY;
+
+// Debug environment variables
+console.log('Supabase Environment Check:', {
+  hasUrl: !!supabaseUrl,
+  hasKey: !!supabaseAnonKey,
+  url: supabaseUrl?.substring(0, 20) + '...',  // Only show start of URL for security
+});
 
 if (!supabaseUrl || !supabaseAnonKey) {
-  console.warn('Supabase credentials not found. Authentication will not work.');
+  console.error('Supabase credentials not found. Authentication will not work.', {
+    url: !!supabaseUrl,
+    key: !!supabaseAnonKey
+  });
+  throw new Error('Missing Supabase credentials. Check your environment variables.');
 }
 
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);

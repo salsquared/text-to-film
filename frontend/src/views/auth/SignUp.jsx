@@ -75,11 +75,11 @@ const SignUp = () => {
           <form className="mt-8 space-y-6" onSubmit={handleUserSubmit}>
             <div className="rounded-md shadow-sm space-y-4">
               <div>
-                <label htmlFor="name" className="sr-only">
+                <label htmlFor="signup-name" className="sr-only">
                   Full Name
                 </label>
                 <input
-                  id="name"
+                  id="signup-name"
                   name="name"
                   type="text"
                   required
@@ -90,11 +90,11 @@ const SignUp = () => {
                 />
               </div>
               <div>
-                <label htmlFor="email" className="sr-only">
+                <label htmlFor="signup-email" className="sr-only">
                   Email address
                 </label>
                 <input
-                  id="email"
+                  id="signup-email"
                   name="email"
                   type="email"
                   required
@@ -105,11 +105,11 @@ const SignUp = () => {
                 />
               </div>
               <div>
-                <label htmlFor="password" className="sr-only">
+                <label htmlFor="signup-password" className="sr-only">
                   Password
                 </label>
                 <input
-                  id="password"
+                  id="signup-password"
                   name="password"
                   type="password"
                   required
@@ -134,11 +134,11 @@ const SignUp = () => {
           <form className="mt-8 space-y-6" onSubmit={handleProjectSubmit}>
             <div className="rounded-md shadow-sm space-y-4">
               <div>
-                <label htmlFor="projectName" className="sr-only">
+                <label htmlFor="signup-project-name" className="sr-only">
                   Project Name
                 </label>
                 <input
-                  id="projectName"
+                  id="signup-project-name"
                   name="projectName"
                   type="text"
                   required
@@ -149,11 +149,11 @@ const SignUp = () => {
                 />
               </div>
               <div>
-                <label htmlFor="projectType" className="sr-only">
+                <label htmlFor="signup-project-type" className="sr-only">
                   Project Type
                 </label>
                 <select
-                  id="projectType"
+                  id="signup-project-type"
                   name="projectType"
                   required
                   value={projectType}
@@ -167,11 +167,11 @@ const SignUp = () => {
                 </select>
               </div>
               <div>
-                <label htmlFor="projectDescription" className="sr-only">
+                <label htmlFor="signup-project-description" className="sr-only">
                   Project Description
                 </label>
                 <textarea
-                  id="projectDescription"
+                  id="signup-project-description"
                   name="projectDescription"
                   required
                   value={projectDescription}

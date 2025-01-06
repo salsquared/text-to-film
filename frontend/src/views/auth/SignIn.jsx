@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useNavigate } from '@tanstack/react-router';
 import { useAuth } from '../../contexts/AuthContext';
+import SupabaseTest from '../../components/SupabaseTest';
 
 const SignIn = () => {
   const [email, setEmail] = useState('');
@@ -9,6 +10,14 @@ const SignIn = () => {
   const navigate = useNavigate();
   const { login } = useAuth();
 
+  // Debug environment variables
+  useEffect(() => {
+    console.log('Environment Variables Check:', {
+      supabaseUrl: process.env.REACT_APP_SUPABASE_URL,
+      hasAnonKey: !!process.env.REACT_APP_SUPABASE_ANON_KEY
+    });
+  }, []);
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     setError('');
@@ -16,6 +25,7 @@ const SignIn = () => {
       await login({ email, password });
       navigate({ to: '/' });
     } catch (err) {
+      console.error('Login error:', err);
       setError('Failed to sign in. Please check your credentials.');
     }
   };
@@ -23,6 +33,7 @@ const SignIn = () => {
   return (
     <div className="min-h-screen flex items-center justify-center bg-slate-50">
       <div className="max-w-md w-full space-y-8 p-8 bg-white rounded-xl shadow-lg">
+        <SupabaseTest />
         <div>
           <h2 className="mt-6 text-center text-3xl font-extrabold text-gray-900">
             Sign in to your account
@@ -43,11 +54,11 @@ const SignIn = () => {
           )}
           <div className="rounded-md shadow-sm space-y-4">
             <div>
-              <label htmlFor="email" className="sr-only">
+              <label htmlFor="signin-email" className="sr-only">
                 Email address
               </label>
               <input
-                id="email"
+                id="signin-email"
                 name="email"
                 type="email"
                 required
@@ -58,11 +69,11 @@ const SignIn = () => {
               />
             </div>
             <div>
-              <label htmlFor="password" className="sr-only">
+              <label htmlFor="signin-password" className="sr-only">
                 Password
               </label>
               <input
-                id="password"
+                id="signin-password"
                 name="password"
                 type="password"
                 required
