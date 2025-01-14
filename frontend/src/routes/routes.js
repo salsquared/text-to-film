@@ -1,5 +1,6 @@
-import { createRootRoute, createRoute, redirect } from '@tanstack/react-router'
+import { createRootRoute, createRoute, redirect, Outlet } from '@tanstack/react-router'
 import MainLayout from '../layouts/MainLayout'
+import AuthLayout from '../layouts/AuthLayout'
 import ProjectsList from '../views/ProjectsList'
 
 // Import stage components
@@ -24,18 +25,19 @@ import SignUp from '../views/auth/SignUp'
 
 // Create the root route
 export const rootRoute = createRootRoute({
-  component: MainLayout,
-  beforeLoad: async ({ context }) => {
-    const isAuthenticated = context?.auth?.isAuthenticated;
-    const isAuthRoute = ['/signin', '/signup'].includes(window.location.pathname);
-    
-    if (!isAuthenticated && !isAuthRoute) {
-      throw redirect({
-        to: '/signin',
-      })
-    }
-    
-    if (isAuthenticated && isAuthRoute) {
+  component: ({ Component, Outlet }) => {
+    return <Component><Outlet /></Component>;
+  },
+})
+
+// Create auth parent route
+export const authRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'auth',
+  component: AuthLayout,
+  beforeLoad: async ({ location }) => {
+    const isAuthenticated = localStorage.getItem('sb-auth-token') !== null;
+    if (isAuthenticated) {
       throw redirect({
         to: '/',
       })
@@ -45,27 +47,42 @@ export const rootRoute = createRootRoute({
 
 // Auth routes
 export const signInRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => authRoute,
   path: 'signin',
   component: SignIn,
 })
 
 export const signUpRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => authRoute,
   path: 'signup',
   component: SignUp,
 })
 
+// Create main parent route
+export const mainRoute = createRoute({
+  getParentRoute: () => rootRoute,
+  id: 'main',
+  component: MainLayout,
+  beforeLoad: async ({ location }) => {
+    const isAuthenticated = localStorage.getItem('sb-auth-token') !== null;
+    if (!isAuthenticated) {
+      throw redirect({
+        to: '/auth/signin',
+      })
+    }
+  },
+})
+
 // Create the index route
 export const indexRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainRoute,
   path: '/',
   component: ProjectsList,
 })
 
 // Create the projects route
 export const projectsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainRoute,
   path: 'projects',
 })
 
@@ -124,26 +141,30 @@ const toolRoutes = [
 
 // Create the settings route
 const settingsRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainRoute,
   path: 'settings',
   component: Settings,
 });
 
 // Add profile route
 const profileRoute = createRoute({
-  getParentRoute: () => rootRoute,
+  getParentRoute: () => mainRoute,
   path: 'profile',
   component: Profile,
 });
 
 // Export the route tree with both stage and tool routes
 export const routeTree = rootRoute.addChildren([
-  signInRoute,
-  signUpRoute,
-  indexRoute,
-  projectsRoute.addChildren([
-    projectRoute.addChildren([...stageRoutes, ...toolRoutes])
+  authRoute.addChildren([
+    signInRoute,
+    signUpRoute,
   ]),
-  profileRoute,
-  settingsRoute
+  mainRoute.addChildren([
+    indexRoute,
+    projectsRoute.addChildren([
+      projectRoute.addChildren([...stageRoutes, ...toolRoutes])
+    ]),
+    profileRoute,
+    settingsRoute
+  ])
 ]);

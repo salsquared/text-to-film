@@ -1,11 +1,11 @@
 import React from 'react'
 
-const Development = () => {
+const Production = () => {
   return (
     <div>
-      <h1>Development Stage</h1>
+      <h1>Production Stage</h1>
     </div>
   )
 }
 
-export default Development 
+export default Production; 
