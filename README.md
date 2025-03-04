@@ -22,9 +22,11 @@ Version control and asset management is another big thing id like to add in the 
 ### Prerequisites
 
 - Node.js (v18 or higher)
-- npm or yarn
 - Python 3.8+
-- Git
+- [uv](https://github.com/astral-sh/uv) - Fast Python package installer
+  ```bash
+  brew install uv
+  ```
 
 ### Installation
 
@@ -42,8 +44,10 @@ npm install
 
 3. Install backend dependencies
 ```bash
-cd ../backend
-pip install -r requirements.txt
+cd backend
+uv venv
+source .venv/bin/activate  # On Windows use: .venv\Scripts\activate
+uv pip install -r requirements.txt
 ```
 
 4. Start the development servers
@@ -54,6 +58,7 @@ npm start
 
 # Terminal 2 - Backend
 cd backend
+source .venv/bin/activate  # If not already activated
 uvicorn app.main:app --reload
 ```
 

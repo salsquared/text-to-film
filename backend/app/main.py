@@ -1,6 +1,12 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 
+from .database import engine
+from . import models
+
+# Create database tables
+models.Base.metadata.create_all(bind=engine)
+
 app = FastAPI()
 
 # Configure CORS
@@ -15,3 +21,7 @@ app.add_middleware(
 @app.get("/")
 async def root():
     return {"message": "text-to-film"}
+
+@app.get("/health")
+async def health_check():
+    return {"status": "healthy", "database": "connected"}
